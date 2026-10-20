@@ -1,0 +1,5 @@
+﻿;desvio_entre_imagens_brilho;desvio_entre_imagens_contraste;desvio_entre_imagens_nitidez
+original;24,925;13,060092;332,29276
+equalização global;6,541435;5,6617284;470,8363
+CLAHE;20,912382;8,873132;441,98608
+gaussiano + CLAHE (padrão);20,998;9,265223;128,48708

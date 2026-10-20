@@ -1,0 +1,23 @@
+# Ambiente
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Base de imagens: 65 MB, baixada e conferida por `uv run invoke dados`.
+data/raw/cardiomegaly_set.zip
+data/raw/cardiomegaly_set/
+data/raw/ecg-image-kit/
+
+# Pesos grandes são regenerados pelos notebooks. As CNNs pequenas (≈ 400 KB) ficam versionadas
+# para o notebook 05 reaproveitá-las logo após o clone; a MobileNet (≈ 10 MB) é retreinada.
+models/*.h5
+models/*.keras
+!models/cnn_pequena_crua.keras
+!models/cnn_pequena_pre.keras
+
+# Chaves de API
+.env

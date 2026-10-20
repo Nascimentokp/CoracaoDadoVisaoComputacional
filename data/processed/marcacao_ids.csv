@@ -1,0 +1,31 @@
+ordem;id;classe;bloco
+1;test/false/339;0;comum
+2;test/false/159;0;comum
+3;test/false/516;0;comum
+4;test/false/56;0;comum
+5;test/true/516;1;comum
+6;test/true/145;1;comum
+7;test/false/200;0;Adriano
+8;test/false/145;0;Adriano
+9;test/true/339;1;Adriano
+10;test/true/159;1;Adriano
+11;test/true/71;1;Adriano
+12;test/false/451;0;Adriano
+13;test/true/376;1;Adriano
+14;test/true/200;1;Adriano
+15;test/true/77;1;Leonardo
+16;test/false/82;0;Leonardo
+17;test/true/451;1;Leonardo
+18;test/true/56;1;Leonardo
+19;test/false/219;0;Leonardo
+20;test/true/248;1;Leonardo
+21;test/false/382;0;Leonardo
+22;test/false/77;0;Leonardo
+23;test/false/248;0;João Paulo
+24;test/false/138;0;João Paulo
+25;test/false/376;0;João Paulo
+26;test/true/82;1;João Paulo
+27;test/true/219;1;João Paulo
+28;test/true/138;1;João Paulo
+29;test/false/71;0;João Paulo
+30;test/true/382;1;João Paulo

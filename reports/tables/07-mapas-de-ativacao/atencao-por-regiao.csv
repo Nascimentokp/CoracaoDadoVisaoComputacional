@@ -1,0 +1,19 @@
+﻿modelo;regiao;classe;fracao_da_atencao;area;vezes_a_area;mapas_vazios
+CNN pequena · cru;coração;Normal;0,23134248;0,181640625;1,273627414498278;0,0
+CNN pequena · cru;coração;Cardiomegalia;0,29284889;0,181640625;1,6122433241977487;0,0
+CNN pequena · cru;tórax sem o coração;Normal;0,33074233;0,2908935546875;1,136987478854123;0,0
+CNN pequena · cru;tórax sem o coração;Cardiomegalia;0,27928582;0,2908935546875;0,960096275211131;0,0
+CNN pequena · cru;fora do tórax;Normal;0,4379152;0,5274658203125;0,8302248014782457;0,0
+CNN pequena · cru;fora do tórax;Cardiomegalia;0,42786533;0,5274658203125;0,8111716625564106;0,0
+CNN pequena · pré-processado;coração;Normal;0,23601845;0,181640625;1,299370386267221;0,0
+CNN pequena · pré-processado;coração;Cardiomegalia;0,25668594;0,181640625;1,4131527152112735;0,0
+CNN pequena · pré-processado;tórax sem o coração;Normal;0,29596782;0,2908935546875;1,017443709347461;0,0
+CNN pequena · pré-processado;tórax sem o coração;Cardiomegalia;0,29284927;0,2908935546875;1,0067231389988984;0,0
+CNN pequena · pré-processado;fora do tórax;Normal;0,46801373;0,5274658203125;0,8872873191065436;0,0
+CNN pequena · pré-processado;fora do tórax;Cardiomegalia;0,45046473;0,5274658203125;0,8540169014695672;0,0
+MobileNetV2 · ajuste fino;coração;Normal;0,28339252;0,181640625;1,5601824688655075;0,0
+MobileNetV2 · ajuste fino;coração;Cardiomegalia;0,33919674;0,181640625;1,8674057170908938;0,0
+MobileNetV2 · ajuste fino;tórax sem o coração;Normal;0,3233813;0,2908935546875;1,1116826053031892;0,0
+MobileNetV2 · ajuste fino;tórax sem o coração;Cardiomegalia;0,3250703;0,2908935546875;1,1174888082577108;0,0
+MobileNetV2 · ajuste fino;fora do tórax;Normal;0,39322624;0,5274658203125;0,7455008854829611;0,0
+MobileNetV2 · ajuste fino;fora do tórax;Cardiomegalia;0,33573276;0,5274658203125;0,636501447328454;0,0

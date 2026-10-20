@@ -1,0 +1,10 @@
+﻿;modelo;regiao;Cardiomegalia;Normal
+0;CNN pequena · cru;coração;1,6122433241977487;1,273627414498278
+1;CNN pequena · cru;fora do tórax;0,8111716625564106;0,8302248014782457
+2;CNN pequena · cru;tórax sem o coração;0,960096275211131;1,136987478854123
+3;CNN pequena · pré-processado;coração;1,4131527152112735;1,299370386267221
+4;CNN pequena · pré-processado;fora do tórax;0,8540169014695672;0,8872873191065436
+5;CNN pequena · pré-processado;tórax sem o coração;1,0067231389988984;1,017443709347461
+6;MobileNetV2 · ajuste fino;coração;1,8674057170908938;1,5601824688655075
+7;MobileNetV2 · ajuste fino;fora do tórax;0,636501447328454;0,7455008854829611
+8;MobileNetV2 · ajuste fino;tórax sem o coração;1,1174888082577108;1,1116826053031892
