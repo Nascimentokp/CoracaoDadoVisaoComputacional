@@ -13,6 +13,7 @@ NOTEBOOKS = [
     "05-cnn",
     "06-o-dado-que-mente",
     "07-mapas-de-ativacao",
+    "08-segmentacao",
 ]
 
 

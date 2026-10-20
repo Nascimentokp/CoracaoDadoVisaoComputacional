@@ -1,0 +1,31 @@
+﻿ordem;id;classe;bloco;area;pontos
+1;test/false/339;0;comum;0,0322265625;17
+2;test/false/159;0;comum;0,0279541015625;8
+3;test/false/516;0;comum;0,015869140625;6
+4;test/false/56;0;comum;0,0318603515625;7
+5;test/true/516;1;comum;0,06231689453125;7
+6;test/true/145;1;comum;;0
+7;test/false/200;0;Adriano;0,05535888671875;7
+8;test/false/145;0;Adriano;0,05810546875;9
+9;test/true/339;1;Adriano;0,09295654296875;7
+10;test/true/159;1;Adriano;0,06634521484375;6
+11;test/true/71;1;Adriano;0,10430908203125;5
+12;test/false/451;0;Adriano;0,084228515625;5
+13;test/true/376;1;Adriano;0,0274658203125;7
+14;test/true/200;1;Adriano;0,1348876953125;8
+15;test/true/77;1;Leonardo;0,1710205078125;7
+16;test/false/82;0;Leonardo;0,09619140625;7
+17;test/true/451;1;Leonardo;0,1343994140625;7
+18;test/true/56;1;Leonardo;0,09478759765625;6
+19;test/false/219;0;Leonardo;0,1114501953125;7
+20;test/true/248;1;Leonardo;0,07879638671875;7
+21;test/false/382;0;Leonardo;0,07965087890625;5
+22;test/false/77;0;Leonardo;0,09649658203125;5
+23;test/false/248;0;João Paulo;0,06695556640625;6
+24;test/false/138;0;João Paulo;0,11358642578125;6
+25;test/false/376;0;João Paulo;0,07391357421875;6
+26;test/true/82;1;João Paulo;0,071533203125;6
+27;test/true/219;1;João Paulo;0,06402587890625;6
+28;test/true/138;1;João Paulo;0,07464599609375;6
+29;test/false/71;0;João Paulo;0,0936279296875;6
+30;test/true/382;1;João Paulo;0,09234619140625;7

@@ -50,6 +50,11 @@ que montou a ECG-Image-Database: um escaneado limpo e uma foto de celular. Tamb�
 0,657; o Grad-CAM mostra a borda esquerda do coração nas cardiomegalias, mas também atenção fora do
 tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × por grupo 0,694).
 
+**Segmentação** (notebook 08): contra 29 contornos marcados à mão, as bordas do ICT dão Dice 0,64
+(IC 0,59–0,69), o limiar e morfologia 0,58 e a caixa fixa 0,51. Os contornos foram feitos na
+[página de marcação](https://claude.ai/artifact/BgKdoMehNApFxrYfeobmE1) e exportados para
+`data/processed/marcacoes/`.
+
 ## Roteiro
 
 | Notebook | Aula | O que faz | Situação |
@@ -61,7 +66,7 @@ tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × po
 | `05-cnn` | CNN | CNN pequena em Keras (cru × pré-processado) contra MobileNetV2, filtros aprendidos comparados ao Sobel, mapas de ativação, teste pareado contra o ICT | ✅ |
 | `06-o-dado-que-mente` | O dado que mente | Exames com gêmeo no treino, split aleatório × por grupo (3 sementes), coração tapado × só o coração | ✅ |
 | `07-mapas-de-ativacao` | Mapa de ativação | Grad-CAM da classe prevista em acertos e erros; fração da atenção no coração, no tórax e fora dele | ✅ |
-| `08-segmentacao` | Segmentação | Contorno do coração pelo ICT e por limiar contra o marcado à mão pela equipe: Dice e IoU | ⏳ aguardando as marcações |
+| `08-segmentacao` | Segmentação | Contorno do coração à mão (página de marcação) contra caixa fixa, limiar e morfologia e bordas do ICT: Dice, IoU, ICT do contorno e Grad-CAM dentro do coração | ✅ (1 anotador) |
 
 ## Como rodar
 
@@ -84,6 +89,7 @@ src/
   visao/geometria.py achar a folha, homografia, régua da grade, traçado e frequência cardíaca
   visao/metricas.py  Dice e IoU
   visao/ict.py       índice cardiotorácico: segmentação 2D e perfil por linha
+  visao/segmentacao.py máscaras do coração e leitura das marcações
   model/cnn.py       CNN pequena, MobileNetV2, aumento sem espelhar, treino
   model/avaliacao.py AUC com bootstrap, comparação pareada, limiar de Youden
   model/gradcam.py   Grad-CAM e atenção por região

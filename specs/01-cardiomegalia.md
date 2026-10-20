@@ -55,3 +55,9 @@ diagnóstico e não substitui a leitura do radiologista.
   a divisão aleatória mantém 60/20/20; tapar e isolar uma caixa são complementares e pintam com a
   média da própria imagem; as caixas de referência cobrem coração e tórax de um tórax sintético.
   (`tests/test_dados.py`, `tests/test_auditoria.py`, `tests/test_ict.py`)
+
+### Segmentação
+- **SEG-01**: um polígono vira máscara com a área certa; a largura máxima de uma máscara é a maior
+  extensão numa linha; as bordas do ICT e o limiar com morfologia acham o coração de um tórax
+  sintético (Dice > 0,7); as marcações exportadas são lidas com e sem o envelope `data`, e contornos
+  com menos de 3 pontos ficam de fora. (`tests/test_segmentacao.py`)
