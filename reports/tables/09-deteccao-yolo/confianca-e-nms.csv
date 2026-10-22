@@ -1,0 +1,5 @@
+﻿;caixas
+conf 0,01 · sem NMS;10
+conf 0,01 · NMS 0,7;1
+conf 0,25 · NMS 0,7;1
+conf 0,6 · NMS 0,7;1

@@ -67,6 +67,14 @@ tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × po
 | `06-o-dado-que-mente` | O dado que mente | Exames com gêmeo no treino, split aleatório × por grupo (3 sementes), coração tapado × só o coração | ✅ |
 | `07-mapas-de-ativacao` | Mapa de ativação | Grad-CAM da classe prevista em acertos e erros; fração da atenção no coração, no tórax e fora dele | ✅ |
 | `08-segmentacao` | Segmentação | Contorno do coração à mão (página de marcação) contra caixa fixa, limiar e morfologia e bordas do ICT: Dice, IoU, ICT do contorno e Grad-CAM dentro do coração | ✅ (1 anotador) |
+| `09-deteccao-yolo` | Detecção (curso YOLO) | YOLOv8n treinado com **pseudo-rótulos** tirados do ICT; formato YOLO, confiança e NMS, IoU e mAP50 contra as caixas marcadas à mão, ICT da caixa | ✅ |
+
+**Detecção** (notebook 09): o YOLOv8n treinado com pseudo-rótulos do ICT reproduz o método clássico
+(mAP50 0,91 contra os pseudo-rótulos), mas não o supera contra as caixas à mão (IoU 0,497 × 0,488;
+mAP50 0,36). O ICT medido pela caixa separa pior que o do perfil (AUC 0,702 × 0,739).
+
+Do curso de YOLO do professor, **vídeo e rastreamento** (aulas 2 e 3) ficam de fora: raio-X de tórax é
+imagem parada. Detecção em imagem e treino com dataset próprio (aulas 1 e 4) estão no notebook 09.
 
 ## Como rodar
 
@@ -90,6 +98,7 @@ src/
   visao/metricas.py  Dice e IoU
   visao/ict.py       índice cardiotorácico: segmentação 2D e perfil por linha
   visao/segmentacao.py máscaras do coração e leitura das marcações
+  visao/deteccao.py  caixas, formato YOLO, IoU e pseudo-rótulos
   model/cnn.py       CNN pequena, MobileNetV2, aumento sem espelhar, treino
   model/avaliacao.py AUC com bootstrap, comparação pareada, limiar de Youden
   model/gradcam.py   Grad-CAM e atenção por região

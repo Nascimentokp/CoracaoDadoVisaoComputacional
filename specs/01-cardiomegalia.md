@@ -61,3 +61,9 @@ diagnóstico e não substitui a leitura do radiologista.
   extensão numa linha; as bordas do ICT e o limiar com morfologia acham o coração de um tórax
   sintético (Dice > 0,7); as marcações exportadas são lidas com e sem o envelope `data`, e contornos
   com menos de 3 pontos ficam de fora. (`tests/test_segmentacao.py`)
+
+### Detecção
+- **DET-01**: caixa → formato YOLO → caixa volta igual; IoU de caixas idênticas é 1, disjuntas 0 e
+  meia sobreposição 1/3; a caixa do polígono é a menor que o contém; o pseudo-rótulo do ICT cobre o
+  coração de um tórax sintético (IoU > 0,8) e não existe sem medida; o dataset grava imagem, rótulo
+  (vazio quando não há objeto) e o YAML de uma classe. (`tests/test_deteccao.py`)
