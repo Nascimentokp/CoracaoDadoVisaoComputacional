@@ -20,6 +20,9 @@ models/*.pt
 # Probabilidades da PSPNet nos 5.552 exames (≈ 40 min na GPU do Mac): regeradas pelo notebook 10.
 data/processed/pretreinada.npz
 
+# Features das bases congeladas e a curva da CNN: regeradas pelo notebook 11.
+data/processed/features/
+
 # Pesos grandes são regenerados pelos notebooks. As CNNs pequenas (≈ 400 KB) ficam versionadas
 # para o notebook 05 reaproveitá-las logo após o clone; a MobileNet (≈ 10 MB) é retreinada.
 models/*.h5

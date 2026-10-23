@@ -49,6 +49,10 @@ diagnóstico e não substitui a leitura do radiologista.
 - **MOD-02**: a AUC com bootstrap contém a AUC pontual; a comparação **pareada** detecta o escore
   melhor (IC acima de zero) e dá diferença zero para escores iguais; o limiar de Youden separa um
   caso perfeito; exames sem escore ficam de fora. (`tests/test_modelos.py`)
+- **MOD-03**: o sorteio de poucos exames é balanceado, reprodutível pela semente, só usa os candidatos
+  e recusa pedir mais exames do que há; a cabeça (regressão logística com C por validação cruzada)
+  aprende com 10 exemplos por classe (AUC > 0,85); base desconhecida é recusada.
+  (`tests/test_transferencia.py`)
 
 ### Divisões e auditoria de atalho
 - **DADOS-02**: a divisão por grupo nunca parte um grupo e mantém 60/20/20 com classes equilibradas;

@@ -1,0 +1,24 @@
+metodo;n_por_classe;sorteio;auc;epocas
+CNN pequena · do zero;10;0;0.4665188284249103;21
+CNN pequena · do zero;10;1;0.5608172790242676;44
+CNN pequena · do zero;10;2;0.48983397206759727;42
+CNN pequena · do zero;10;3;0.5568011500439969;18
+CNN pequena · do zero;10;4;0.4512681749175662;21
+CNN pequena · do zero;20;0;0.5154649974697743;16
+CNN pequena · do zero;20;1;0.5698261718812954;30
+CNN pequena · do zero;20;2;0.45350186463131226;19
+CNN pequena · do zero;20;3;0.544040432040071;17
+CNN pequena · do zero;20;4;0.5512958945878955;28
+CNN pequena · do zero;40;0;0.5224593794017063;44
+CNN pequena · do zero;40;1;0.5508140235746126;28
+CNN pequena · do zero;40;2;0.5582113076915638;53
+CNN pequena · do zero;40;3;0.5660292216896751;29
+CNN pequena · do zero;40;4;0.5524755921856315;42
+CNN pequena · do zero;100;0;0.5587028483572871;28
+CNN pequena · do zero;100;1;0.5520839712617929;16
+CNN pequena · do zero;100;2;0.5526158021460181;18
+CNN pequena · do zero;100;3;0.5553426441342277;24
+CNN pequena · do zero;100;4;0.5551766484339998;20
+CNN pequena · do zero;300;0;0.565017131400907;21
+CNN pequena · do zero;300;1;0.6754542319233907;102
+CNN pequena · do zero;300;2;0.6221647773240204;85

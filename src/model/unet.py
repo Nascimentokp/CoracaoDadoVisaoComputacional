@@ -12,7 +12,7 @@ as probabilidades em vez da máscara binária, mede direto a sobreposição e n�
 liga para quantos pixels de fundo há. A perda usada é a soma das duas.
 
 Sem aumento de dados: as camadas aleatórias do Keras mexeriam na imagem e não
-na máscara. Os 2.662 raio-X de treino bastam para uma rede deste tamanho.
+na máscara. Os 3.550 raio-X de treino bastam para uma rede deste tamanho.
 """
 
 from __future__ import annotations

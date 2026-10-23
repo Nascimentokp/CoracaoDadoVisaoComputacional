@@ -16,6 +16,7 @@ NOTEBOOKS = [
     "08-segmentacao",
     "09-deteccao-yolo",
     "10-segmentacao-unet",
+    "11-poucos-dados",
 ]
 
 

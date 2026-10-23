@@ -32,8 +32,9 @@ que montou a ECG-Image-Database: um escaneado limpo e uma foto de celular. Tamb�
 
 O notebook 10 usa a PSPNet de segmentação anatômica do
 [torchxrayvision](https://github.com/mlmed/torchxrayvision) (licença Apache-2.0), treinada no
-[ChestX-Det](https://github.com/Deepwise-AILab/ChestX-Det-Dataset). Os pesos são baixados na primeira
-execução.
+[ChestX-Det](https://github.com/Deepwise-AILab/ChestX-Det-Dataset); o notebook 11, a DenseNet121 do
+mesmo pacote treinada no [CheXpert](https://stanfordmlgroup.github.io/competitions/chexpert/). Os pesos
+são baixados na primeira execução.
 
 **Limitações conhecidas** (medidas no notebook 01):
 
@@ -46,11 +47,12 @@ execução.
 
 | Abordagem | AUC no teste | Observação |
 |:--|--:|:--|
-| CNN pequena, raio-X pré-processado (notebook 05) | **0,809** (0,783–0,833) | 27 mil pesos; empata com a crua |
+| DenseNet121 do CheXpert congelada + regressão logística (notebook 11) | **0,826** (0,801–0,848) | +0,031 sobre a MobileNetV2 com ajuste fino (IC 0,005–0,057); base treinada em raio-X de outro hospital |
+| CNN pequena, raio-X pré-processado (notebook 05) | 0,809 (0,783–0,833) | 27 mil pesos; empata com a crua |
 | CNN pequena, raio-X cru (notebook 05) | 0,802 (0,776–0,827) | +0,064 sobre o ICT (IC 0,030–0,097, bootstrap pareado) |
 | ICT clássico (perfil por linha, notebook 04) | 0,739 (0,710–0,769) | Corte clínico 0,5: sensibilidade 54 %, especificidade 82 % |
 | MobileNetV2 ImageNet + ajuste fino (notebook 05) | 0,795 (0,768–0,819) | Empata com a CNN pequena, com 80× mais pesos |
-| ICT pela segmentação: coração da U-Net / pulmões da PSPNet (notebook 10) | **0,803** (0,776–0,830) | +0,064 sobre o ICT do perfil (IC 0,025–0,100, pareado); medida interpretável |
+| ICT pela segmentação: coração da U-Net / pulmões da PSPNet (notebook 10) | 0,803 (0,776–0,830) | +0,064 sobre o ICT do perfil (IC 0,025–0,100, pareado); medida interpretável |
 
 **O que a rede usa** (notebooks 06 e 07): com a região do coração tapada a AUC cai só de 0,695 para
 0,657; o Grad-CAM mostra a borda esquerda do coração nas cardiomegalias, mas também atenção fora do
@@ -75,6 +77,7 @@ tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × po
 | `08-segmentacao` | Segmentação | Contorno do coração à mão (página de marcação) contra caixa fixa, limiar e morfologia e bordas do ICT: Dice, IoU, ICT do contorno e Grad-CAM dentro do coração | ✅ (1 anotador) |
 | `09-deteccao-yolo` | Detecção (curso YOLO) | YOLOv8n treinado com **pseudo-rótulos** tirados do ICT; formato YOLO, confiança e NMS, IoU e mAP50 contra as caixas marcadas à mão, ICT da caixa | ✅ |
 | `10-segmentacao-unet` | Segmentação com rede | PSPNet pré-treinada (torchxrayvision) e U-Net em Keras com perda Dice, treinada com pseudo-rótulos de dois professores; Dice, IoU, distância de borda e Hausdorff 95; melhores e piores casos; ICT do coração recortado | ✅ |
+| `11-poucos-dados` | Transfer learning com poucas imagens (exercício) | Curva de aprendizado de 10 a 1.775 exames por classe: MobileNetV2, EfficientNetB0 e DenseNet121 do CheXpert congeladas contra a CNN do zero e os ICTs sem rótulo; a validação de 20 imagens; o efeito do espelhamento | ✅ |
 
 **Detecção** (notebook 09): o YOLOv8n treinado com pseudo-rótulos do ICT reproduz o método clássico
 (mAP50 0,91 contra os pseudo-rótulos), mas não o supera contra as caixas à mão (IoU 0,497 × 0,488;
@@ -85,6 +88,12 @@ mAP50 0,36). O ICT medido pela caixa separa pior que o do perfil (AUC 0,702 × 0
 com o próprio professor: o rótulo limita mais que a arquitetura. O ICT do coração recortado sobre os
 pulmões segmentados dá AUC 0,803. A PSPNet foi treinada no ChestX-Det, outro recorte do ChestX-ray14:
 parte do nosso teste pode ter estado no treino dela, então o Dice pode estar otimista.
+
+**Poucos dados** (notebook 11): com 40 exames por classe, como no exercício, a DenseNet do CheXpert
+congelada dá AUC 0,705 e as bases ImageNet 0,63; a CNN do zero fica perto do acaso até 100 por classe.
+Nenhum aprendiz alcança o ICT da segmentação (0,803, sem rótulos) antes do treino inteiro. A acurácia
+numa validação de 20 imagens varia de 25 % a 95 % entre sorteios da mesma receita, e espelhar o raio-X
+piora a AUC.
 
 Do curso de YOLO do professor, **vídeo e rastreamento** (aulas 2 e 3) ficam de fora: raio-X de tórax é
 imagem parada. Detecção em imagem e treino com dataset próprio (aulas 1 e 4) estão no notebook 09.
@@ -118,6 +127,7 @@ src/
   model/gradcam.py   Grad-CAM e atenção por região
   model/unet.py      U-Net em Keras e perda Dice
   model/pretreinada.py PSPNet do torchxrayvision (coração e pulmões), com cache
+  model/transferencia.py bases congeladas (ImageNet e CheXpert), sorteio balanceado e cabeça
   utils/io.py        gravação padronizada de figuras e tabelas
 notebooks/           um notebook por aula
 reports/             figuras e as tabelas que as originaram
