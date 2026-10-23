@@ -56,6 +56,12 @@ ECG_ESCANEADO = "ecg00012.jpg"
 #: Foto de celular real, de frente, em baixa resolução (≈ 4,5 px/mm).
 ECG_FOTO = "ecg00046.jpg"
 
+#: Tomografia de tórax CTChest, amostra pública do 3D Slicer (a mesma dos exemplos de
+#: tomografia do curso de segmentação). ≈ 40 MB, conferida pelo SHA-256 do endereço.
+SHA256_CT = "4507b664690840abb6cb9af2d919377ffc4ef75b167cb6fd0f747befdb12e38e"
+URL_CT = f"https://github.com/Slicer/SlicerTestingData/releases/download/SHA256/{SHA256_CT}"
+ARQUIVO_CT = DATA_RAW / "ct-torax.nrrd"
+
 # --------------------------------------------------------------------------- #
 # Reprodutibilidade e protocolo de avaliação
 # --------------------------------------------------------------------------- #

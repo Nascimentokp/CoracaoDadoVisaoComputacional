@@ -17,16 +17,18 @@ NOTEBOOKS = [
     "09-deteccao-yolo",
     "10-segmentacao-unet",
     "11-poucos-dados",
+    "12-raio-x-sintetico",
 ]
 
 
 @task
 def dados(c):
-    """Baixa a base do Zenodo (confere o MD5) e as amostras de ECG em data/raw/."""
-    from src.data.dados import baixar_base, baixar_ecg
+    """Baixa a base do Zenodo (confere o MD5), as amostras de ECG e a tomografia em data/raw/."""
+    from src.data.dados import baixar_base, baixar_ct, baixar_ecg
 
     print("Base em", baixar_base())
     print("ECG em", baixar_ecg())
+    print("Tomografia em", baixar_ct())
 
 
 @task

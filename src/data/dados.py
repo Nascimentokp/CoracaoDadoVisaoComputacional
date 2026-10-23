@@ -61,6 +61,20 @@ def baixar_ecg(arquivos: tuple[str, ...] = (config.ECG_ESCANEADO, config.ECG_FOT
     return config.PASTA_ECG
 
 
+def baixar_ct() -> Path:
+    """Baixa a tomografia de tórax do 3D Slicer (se faltar) e confere o SHA-256."""
+    if not config.ARQUIVO_CT.exists():
+        config.DATA_RAW.mkdir(parents=True, exist_ok=True)
+        urllib.request.urlretrieve(config.URL_CT, config.ARQUIVO_CT)
+    h = hashlib.sha256()
+    with config.ARQUIVO_CT.open("rb") as arquivo:
+        for bloco in iter(lambda: arquivo.read(1 << 20), b""):
+            h.update(bloco)
+    if h.hexdigest() != config.SHA256_CT:
+        raise ValueError(f"SHA-256 de {config.ARQUIVO_CT.name} não confere: arquivo corrompido.")
+    return config.ARQUIVO_CT
+
+
 def carregar_ecg(nome: str) -> np.ndarray:
     """Lê uma amostra de ECG como imagem BGR (convenção do OpenCV)."""
     imagem = cv2.imread(str(baixar_ecg((nome,)) / nome))

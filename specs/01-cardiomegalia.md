@@ -76,3 +76,9 @@ diagnóstico e não substitui a leitura do radiologista.
   meia sobreposição 1/3; a caixa do polígono é a menor que o contém; o pseudo-rótulo do ICT cobre o
   coração de um tórax sintético (IoU > 0,8) e não existe sem medida; o dataset grava imagem, rótulo
   (vazio quando não há objeto) e o YAML de uma classe. (`tests/test_deteccao.py`)
+
+### Tomografia (apêndice)
+- **TC-01**: a janela leva a faixa escolhida a [0, 1]; num fantoma de tórax o pulmão por densidade acha
+  os dois pulmões e deixa de fora o ar de fora do corpo; o gás do abdome passa corte a corte mas sai na
+  conta em 3D; a atenuação vale 0 no ar e 1 na água; a projeção soma em milímetros e sai na convenção
+  radiológica; levar a 128 × 128 preserva a proporção das larguras. (`tests/test_tomografia.py`)

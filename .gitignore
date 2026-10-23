@@ -11,6 +11,7 @@ __pycache__/
 data/raw/cardiomegaly_set.zip
 data/raw/cardiomegaly_set/
 data/raw/ecg-image-kit/
+data/raw/ct-torax.nrrd
 
 # Dataset YOLO e pesos do detector: regerados pelo notebook 09.
 data/processed/yolo/

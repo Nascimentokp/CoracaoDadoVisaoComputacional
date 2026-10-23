@@ -1,0 +1,16 @@
+﻿revelado;metodo;largura_cm;erro_pct
+linear;limiar e morfologia;;
+linear;perfil do ICT;;
+linear;PSPNet;27,51114752702416;-8,0
+gama 1,5;limiar e morfologia;;
+gama 1,5;perfil do ICT;;
+gama 1,5;PSPNet;;
+CLAHE;limiar e morfologia;28,70728437602521;-4,0
+CLAHE;perfil do ICT;42,263501998037114;41,333333333333336
+CLAHE;PSPNet;29,10599665902556;-2,6666666666666665
+nitidez suave;limiar e morfologia;;
+nitidez suave;perfil do ICT;;
+nitidez suave;PSPNet;28,30857209302486;-5,333333333333333
+nitidez forte;limiar e morfologia;;
+nitidez forte;perfil do ICT;25,716942253522586;-14,0
+nitidez forte;PSPNet;12,758793056011204;-57,333333333333336

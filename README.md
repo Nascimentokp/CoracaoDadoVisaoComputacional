@@ -30,6 +30,10 @@ O notebook 03 usa duas amostras de ECG em papel do
 que montou a ECG-Image-Database: um escaneado limpo e uma foto de celular. Também são baixadas por
 `uv run invoke dados`.
 
+O notebook 12 usa a tomografia de tórax CTChest, amostra pública do
+[3D Slicer](https://github.com/Slicer/SlicerTestingData) (a mesma dos exemplos do curso de segmentação),
+baixada por `uv run invoke dados` e conferida pelo SHA-256.
+
 O notebook 10 usa a PSPNet de segmentação anatômica do
 [torchxrayvision](https://github.com/mlmed/torchxrayvision) (licença Apache-2.0), treinada no
 [ChestX-Det](https://github.com/Deepwise-AILab/ChestX-Det-Dataset); o notebook 11, a DenseNet121 do
@@ -78,6 +82,7 @@ tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × po
 | `09-deteccao-yolo` | Detecção (curso YOLO) | YOLOv8n treinado com **pseudo-rótulos** tirados do ICT; formato YOLO, confiança e NMS, IoU e mAP50 contra as caixas marcadas à mão, ICT da caixa | ✅ |
 | `10-segmentacao-unet` | Segmentação com rede | PSPNet pré-treinada (torchxrayvision) e U-Net em Keras com perda Dice, treinada com pseudo-rótulos de dois professores; Dice, IoU, distância de borda e Hausdorff 95; melhores e piores casos; ICT do coração recortado | ✅ |
 | `11-poucos-dados` | Transfer learning com poucas imagens (exercício) | Curva de aprendizado de 10 a 1.775 exames por classe: MobileNetV2, EfficientNetB0 e DenseNet121 do CheXpert congeladas contra a CNN do zero e os ICTs sem rótulo; a validação de 20 imagens; o efeito do espelhamento | ✅ |
+| `12-raio-x-sintetico` | Apêndice: tomografia e ressonância (curso de segmentação) | Hounsfield, janelas e pulmão por densidade numa tomografia real; raio-X sintético somando o volume; largura do tórax com gabarito físico; o mesmo tórax em cinco revelados | ✅ |
 
 **Detecção** (notebook 09): o YOLOv8n treinado com pseudo-rótulos do ICT reproduz o método clássico
 (mAP50 0,91 contra os pseudo-rótulos), mas não o supera contra as caixas à mão (IoU 0,497 × 0,488;
@@ -94,6 +99,11 @@ congelada dá AUC 0,705 e as bases ImageNet 0,63; a CNN do zero fica perto do ac
 Nenhum aprendiz alcança o ICT da segmentação (0,803, sem rótulos) antes do treino inteiro. A acurácia
 numa validação de 20 imagens varia de 25 % a 95 % entre sorteios da mesma receita, e espelhar o raio-X
 piora a AUC.
+
+**Raio-X sintético** (notebook 12, apêndice): somando a tomografia CTChest sai um raio-X com largura
+do tórax conhecida (29,9 cm). Mudando só o "revelado", a PSPNet erra de −3 % a −57 % e os métodos
+clássicos só funcionam com o CLAHE: o pixel sem unidade faz os métodos dependerem do processamento do
+aparelho. O coração não sai por densidade, e não há gabarito para ele.
 
 Do curso de YOLO do professor, **vídeo e rastreamento** (aulas 2 e 3) ficam de fora: raio-X de tórax é
 imagem parada. Detecção em imagem e treino com dataset próprio (aulas 1 e 4) estão no notebook 09.
@@ -122,6 +132,7 @@ src/
   visao/ict.py       índice cardiotorácico: segmentação 2D e perfil por linha
   visao/segmentacao.py máscaras do coração, maior componente e leitura das marcações
   visao/deteccao.py  caixas, formato YOLO, IoU e pseudo-rótulos
+  visao/tomografia.py Hounsfield, pulmão por densidade e raio-X sintético
   model/cnn.py       CNN pequena, MobileNetV2, aumento sem espelhar, treino
   model/avaliacao.py AUC com bootstrap, comparação pareada, limiar de Youden
   model/gradcam.py   Grad-CAM e atenção por região
