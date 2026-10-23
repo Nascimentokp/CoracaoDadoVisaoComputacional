@@ -30,6 +30,11 @@ O notebook 03 usa duas amostras de ECG em papel do
 que montou a ECG-Image-Database: um escaneado limpo e uma foto de celular. Também são baixadas por
 `uv run invoke dados`.
 
+O notebook 10 usa a PSPNet de segmentação anatômica do
+[torchxrayvision](https://github.com/mlmed/torchxrayvision) (licença Apache-2.0), treinada no
+[ChestX-Det](https://github.com/Deepwise-AILab/ChestX-Det-Dataset). Os pesos são baixados na primeira
+execução.
+
 **Limitações conhecidas** (medidas no notebook 01):
 
 * os arquivos se chamam só `<n>.png`, sem ID de paciente. 76 raio-X de teste (6,8 %) têm um
@@ -45,6 +50,7 @@ que montou a ECG-Image-Database: um escaneado limpo e uma foto de celular. Tamb�
 | CNN pequena, raio-X cru (notebook 05) | 0,802 (0,776–0,827) | +0,064 sobre o ICT (IC 0,030–0,097, bootstrap pareado) |
 | ICT clássico (perfil por linha, notebook 04) | 0,739 (0,710–0,769) | Corte clínico 0,5: sensibilidade 54 %, especificidade 82 % |
 | MobileNetV2 ImageNet + ajuste fino (notebook 05) | 0,795 (0,768–0,819) | Empata com a CNN pequena, com 80× mais pesos |
+| ICT pela segmentação: coração da U-Net / pulmões da PSPNet (notebook 10) | **0,803** (0,776–0,830) | +0,064 sobre o ICT do perfil (IC 0,025–0,100, pareado); medida interpretável |
 
 **O que a rede usa** (notebooks 06 e 07): com a região do coração tapada a AUC cai só de 0,695 para
 0,657; o Grad-CAM mostra a borda esquerda do coração nas cardiomegalias, mas também atenção fora do
@@ -68,10 +74,17 @@ tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × po
 | `07-mapas-de-ativacao` | Mapa de ativação | Grad-CAM da classe prevista em acertos e erros; fração da atenção no coração, no tórax e fora dele | ✅ |
 | `08-segmentacao` | Segmentação | Contorno do coração à mão (página de marcação) contra caixa fixa, limiar e morfologia e bordas do ICT: Dice, IoU, ICT do contorno e Grad-CAM dentro do coração | ✅ (1 anotador) |
 | `09-deteccao-yolo` | Detecção (curso YOLO) | YOLOv8n treinado com **pseudo-rótulos** tirados do ICT; formato YOLO, confiança e NMS, IoU e mAP50 contra as caixas marcadas à mão, ICT da caixa | ✅ |
+| `10-segmentacao-unet` | Segmentação com rede | PSPNet pré-treinada (torchxrayvision) e U-Net em Keras com perda Dice, treinada com pseudo-rótulos de dois professores; Dice, IoU, distância de borda e Hausdorff 95; melhores e piores casos; ICT do coração recortado | ✅ |
 
 **Detecção** (notebook 09): o YOLOv8n treinado com pseudo-rótulos do ICT reproduz o método clássico
 (mAP50 0,91 contra os pseudo-rótulos), mas não o supera contra as caixas à mão (IoU 0,497 × 0,488;
 mAP50 0,36). O ICT medido pela caixa separa pior que o do perfil (AUC 0,702 × 0,739).
+
+**Segmentação com rede** (notebook 10): a U-Net treinada com pseudo-rótulos da PSPNet chega a Dice 0,69
+(IC 0,61–0,76) e Hausdorff 95 de 11 px contra os contornos à mão (bordas do ICT: 0,64 e 16 px), e empata
+com o próprio professor: o rótulo limita mais que a arquitetura. O ICT do coração recortado sobre os
+pulmões segmentados dá AUC 0,803. A PSPNet foi treinada no ChestX-Det, outro recorte do ChestX-ray14:
+parte do nosso teste pode ter estado no treino dela, então o Dice pode estar otimista.
 
 Do curso de YOLO do professor, **vídeo e rastreamento** (aulas 2 e 3) ficam de fora: raio-X de tórax é
 imagem parada. Detecção em imagem e treino com dataset próprio (aulas 1 e 4) estão no notebook 09.
@@ -82,6 +95,7 @@ imagem parada. Detecção em imagem e treino com dataset próprio (aulas 1 e 4) 
 uv sync                    # ambiente (Python 3.12)
 uv run invoke dados        # baixa e confere a base
 uv run invoke testes       # critérios de aceitação (specs/01-cardiomegalia.md)
+uv run python scripts/treinar_unets.py  # U-Nets do notebook 10 (≈ 1 h cada na CPU)
 uv run invoke notebooks    # executa os notebooks e regrava reports/
 uv run invoke lab          # JupyterLab
 ```
@@ -95,13 +109,15 @@ src/
   visao/auditoria.py qualidade, duplicatas e quase duplicatas
   visao/filtros.py   kernels à mão, ruído, Sobel, Canny, CLAHE e pré-processamento
   visao/geometria.py achar a folha, homografia, régua da grade, traçado e frequência cardíaca
-  visao/metricas.py  Dice e IoU
+  visao/metricas.py  Dice, IoU e distâncias de borda (média, Hausdorff 95)
   visao/ict.py       índice cardiotorácico: segmentação 2D e perfil por linha
-  visao/segmentacao.py máscaras do coração e leitura das marcações
+  visao/segmentacao.py máscaras do coração, maior componente e leitura das marcações
   visao/deteccao.py  caixas, formato YOLO, IoU e pseudo-rótulos
   model/cnn.py       CNN pequena, MobileNetV2, aumento sem espelhar, treino
   model/avaliacao.py AUC com bootstrap, comparação pareada, limiar de Youden
   model/gradcam.py   Grad-CAM e atenção por região
+  model/unet.py      U-Net em Keras e perda Dice
+  model/pretreinada.py PSPNet do torchxrayvision (coração e pulmões), com cache
   utils/io.py        gravação padronizada de figuras e tabelas
 notebooks/           um notebook por aula
 reports/             figuras e as tabelas que as originaram

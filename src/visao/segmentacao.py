@@ -89,6 +89,19 @@ def mascara_por_limiar(
     return ndi.binary_fill_holes(mascara)
 
 
+def maior_componente(mascara: np.ndarray) -> np.ndarray:
+    """Só o maior pedaço conexo (vizinhança 8), com os buracos preenchidos.
+
+    Pós-processamento padrão de segmentação: uma rede pode marcar ilhas soltas
+    (um pedaço de diafragma, uma clavícula), e o coração é um só.
+    """
+    n, rotulos = cv2.connectedComponents(np.asarray(mascara).astype(np.uint8), connectivity=8)
+    if n < 2:
+        return np.zeros(np.shape(mascara), bool)
+    maior = 1 + int(np.argmax(np.bincount(rotulos.ravel())[1:]))
+    return ndi.binary_fill_holes(rotulos == maior)
+
+
 def largura_maxima(mascara: np.ndarray) -> int:
     """Maior extensão horizontal da máscara numa mesma linha, em pixels."""
     larguras = [int(np.ptp(np.where(linha)[0])) + 1 for linha in mascara if linha.any()]

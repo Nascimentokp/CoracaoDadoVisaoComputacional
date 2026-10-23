@@ -60,7 +60,12 @@ diagnóstico e não substitui a leitura do radiologista.
 - **SEG-01**: um polígono vira máscara com a área certa; a largura máxima de uma máscara é a maior
   extensão numa linha; as bordas do ICT e o limiar com morfologia acham o coração de um tórax
   sintético (Dice > 0,7); as marcações exportadas são lidas com e sem o envelope `data`, e contornos
-  com menos de 3 pontos ficam de fora. (`tests/test_segmentacao.py`)
+  com menos de 3 pontos ficam de fora; o maior componente conexo descarta ilhas e tapa buracos.
+  (`tests/test_segmentacao.py`)
+- **SEG-02**: o Dice suave da U-Net é igual ao Dice em máscaras binárias e a perda some quando a
+  previsão é o rótulo; a U-Net devolve um mapa 128 × 128 em [0, 1] com os blocos `desce`, `fundo` e
+  `sobe` nomeados; num problema de brinquedo (disco em posição sorteada) ela aprende o recorte
+  (Dice > 0,8). (`tests/test_unet.py`)
 
 ### Detecção
 - **DET-01**: caixa → formato YOLO → caixa volta igual; IoU de caixas idênticas é 1, disjuntas 0 e

@@ -15,6 +15,7 @@ NOTEBOOKS = [
     "07-mapas-de-ativacao",
     "08-segmentacao",
     "09-deteccao-yolo",
+    "10-segmentacao-unet",
 ]
 
 
@@ -39,7 +40,7 @@ def notebooks(c):
     for nome in NOTEBOOKS:
         c.run(
             f"jupyter nbconvert --to notebook --execute --inplace "
-            f"--ExecutePreprocessor.timeout=1800 notebooks/{nome}.ipynb"
+            f"--ExecutePreprocessor.timeout=7200 notebooks/{nome}.ipynb"
         )
 
 

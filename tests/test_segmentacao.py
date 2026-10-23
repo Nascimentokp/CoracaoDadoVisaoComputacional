@@ -45,3 +45,14 @@ def test_carregar_marcacoes(tmp_path):
     tabela = segmentacao.carregar_marcacoes(tmp_path)
     assert len(tabela) == 2  # o polígono de 1 ponto fica de fora
     assert set(tabela["anotador"]) == {"u_a", "u_b"}
+
+
+def test_maior_componente_fica_com_o_maior_e_tapa_buracos():
+    mascara = np.zeros((60, 60), bool)
+    mascara[10:40, 10:40] = True
+    mascara[20:25, 20:25] = False  # buraco
+    mascara[50:55, 50:55] = True  # ilha solta
+    so_um = segmentacao.maior_componente(mascara)
+    assert so_um[22, 22] and not so_um[52, 52]
+    assert so_um.sum() == 30 * 30
+    assert not segmentacao.maior_componente(np.zeros((8, 8), bool)).any()

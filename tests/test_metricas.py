@@ -1,9 +1,9 @@
-"""Dice e IoU em casos de resposta conhecida (MET-01)."""
+"""Dice, IoU e distâncias de borda em casos de resposta conhecida (MET-01, MET-02)."""
 
 import numpy as np
 import pytest
 
-from src.visao.metricas import dice, iou
+from src.visao.metricas import borda, dice, distancia_media_borda, hausdorff95, iou
 
 
 def test_identicas_e_disjuntas():
@@ -34,3 +34,21 @@ def test_dice_nunca_menor_que_iou():
 def test_vazias_concordam():
     vazia = np.zeros((5, 5), np.uint8)
     assert dice(vazia, vazia) == iou(vazia, vazia) == 1.0
+
+
+def test_distancias_de_borda():
+    a = np.zeros((40, 40), bool)
+    a[10:30, 10:30] = True
+    b = np.zeros((40, 40), bool)
+    b[10:30, 13:33] = True  # o mesmo quadrado, 3 px para a direita
+    assert distancia_media_borda(a, a) == hausdorff95(a, a) == 0.0
+    assert hausdorff95(a, b) == pytest.approx(3.0, abs=0.01)
+    assert 0 < distancia_media_borda(a, b) < hausdorff95(a, b)
+    assert np.isnan(hausdorff95(a, np.zeros_like(a)))
+
+
+def test_borda_e_o_anel_externo():
+    a = np.zeros((10, 10), bool)
+    a[2:8, 2:8] = True
+    assert borda(a).sum() == 6 * 4 - 4
+    assert not borda(a)[4, 4]
