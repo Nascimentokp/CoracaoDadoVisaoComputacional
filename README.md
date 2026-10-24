@@ -97,13 +97,15 @@ parte do nosso teste pode ter estado no treino dela, então o Dice pode estar ot
 **Poucos dados** (notebook 11): com 40 exames por classe, como no exercício, a DenseNet do CheXpert
 congelada dá AUC 0,705 e as bases ImageNet 0,63; a CNN do zero fica perto do acaso até 100 por classe.
 Nenhum aprendiz alcança o ICT da segmentação (0,803, sem rótulos) antes do treino inteiro. A acurácia
-numa validação de 20 imagens varia de 25 % a 95 % entre sorteios da mesma receita, e espelhar o raio-X
-piora a AUC.
+numa validação de 20 imagens varia de 25 % a 95 % entre sorteios da mesma receita. Espelhar o raio-X
+tira 0,010 de AUC da DenseNet do CheXpert, que sabe de que lado fica o coração, e quase não mexe nas
+bases ImageNet.
 
 **Raio-X sintético** (notebook 12, apêndice): somando a tomografia CTChest sai um raio-X com largura
-do tórax conhecida (29,9 cm). Mudando só o "revelado", a PSPNet erra de −3 % a −57 % e os métodos
-clássicos só funcionam com o CLAHE: o pixel sem unidade faz os métodos dependerem do processamento do
-aparelho. O coração não sai por densidade, e não há gabarito para ele.
+do tórax conhecida (29,9 cm). Mudando só o "revelado", a PSPNet erra −3 % a −5 % em quatro de cinco
+versões e falha numa (−84 %); os métodos clássicos medem em duas ou três, com erros de −4 % a −67 %. O
+pixel sem unidade faz os limiares dependerem do processamento do aparelho. O coração não sai por
+densidade, e não há gabarito para ele.
 
 Do curso de YOLO do professor, **vídeo e rastreamento** (aulas 2 e 3) ficam de fora: raio-X de tórax é
 imagem parada. Detecção em imagem e treino com dataset próprio (aulas 1 e 4) estão no notebook 09.

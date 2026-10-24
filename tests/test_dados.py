@@ -77,3 +77,16 @@ def test_dividir_aleatorio_60_20_20(catalogo):
     assert proporcoes["treino"] == pytest.approx(0.6, abs=0.01)
     assert proporcoes["validacao"] == pytest.approx(0.2, abs=0.01)
     assert proporcoes["teste"] == pytest.approx(0.2, abs=0.01)
+
+
+def test_download_conferido_apaga_arquivo_ruim(tmp_path):
+    from src.data import dados
+
+    origem = tmp_path / "origem.bin"
+    origem.write_bytes(b"conteudo")
+    destino = dados._baixar(origem.as_uri(), tmp_path / "sub" / "destino.bin")
+    assert destino.read_bytes() == b"conteudo"
+    assert not (tmp_path / "sub" / "destino.bin.part").exists()
+    with pytest.raises(ValueError):
+        dados._conferir(destino, "0" * 64, "sha256")
+    assert not destino.exists()  # a próxima chamada baixa de novo

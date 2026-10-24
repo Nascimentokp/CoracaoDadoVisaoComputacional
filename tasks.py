@@ -50,8 +50,8 @@ def notebooks(c):
 @task
 def lint(c):
     """Verifica o código com o ruff (lint e formatação)."""
-    c.run("ruff check src tests tasks.py")
-    c.run("ruff format --check src tests tasks.py")
+    c.run("ruff check src tests scripts tasks.py")
+    c.run("ruff format --check src tests scripts tasks.py")
 
 
 @task

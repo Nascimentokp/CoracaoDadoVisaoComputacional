@@ -28,6 +28,7 @@ from pathlib import Path
 
 import numpy as np
 from sklearn.linear_model import LogisticRegressionCV
+from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -116,13 +117,18 @@ def sortear(y: np.ndarray, candidatos: np.ndarray, n_por_classe: int, semente: i
     return np.sort(np.concatenate(escolhidos))
 
 
-def cabeca(n_por_classe: int):
+def cabeca(n_por_classe: int, grupos: np.ndarray | None = None, y: np.ndarray | None = None):
     """Padronização + regressão logística L2, com C escolhido por validação cruzada na amostra.
 
     Até 5 dobras estratificadas, nunca mais dobras que exames por classe; a
-    escolha é pela AUC.
+    escolha é pela AUC. Com `grupos` (e o `y` do treino), as dobras respeitam os
+    grupos: um raio-X e a sua cópia espelhada caem sempre na mesma dobra, senão
+    a validação veria uma quase cópia do treino e escolheria C frouxo demais.
     """
     dobras = int(min(5, n_por_classe))
+    if grupos is not None:
+        divisor = StratifiedGroupKFold(dobras, shuffle=True, random_state=config.SEMENTE)
+        dobras = list(divisor.split(np.zeros(len(y)), y, grupos))
     return make_pipeline(
         StandardScaler(),
         LogisticRegressionCV(

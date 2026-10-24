@@ -29,6 +29,14 @@ def test_cabeca_aprende_com_poucos_exemplos():
     assert roc_auc_score(y[200:], modelo.predict_proba(X[200:])[:, 1]) > 0.85
 
 
+def test_dobras_agrupadas_nunca_separam_o_espelho():
+    y = np.array([0, 1] * 20)
+    grupos = np.concatenate([np.arange(40), np.arange(40)])
+    cabeca = transferencia.cabeca(20, grupos=grupos, y=np.concatenate([y, y]))
+    for treino, validacao in cabeca[-1].cv:
+        assert not set(grupos[treino]) & set(grupos[validacao])
+
+
 def test_base_desconhecida():
     with pytest.raises(ValueError):
         transferencia.extrair("VGG16", np.zeros((1, 128, 128), np.uint8))

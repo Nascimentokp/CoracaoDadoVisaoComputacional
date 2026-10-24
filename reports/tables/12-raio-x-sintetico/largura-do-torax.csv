@@ -1,16 +1,16 @@
 ﻿revelado;metodo;largura_cm;erro_pct
 linear;limiar e morfologia;;
 linear;perfil do ICT;;
-linear;PSPNet;27,51114752702416;-8,0
+linear;PSPNet;28,70728437602521;-4,0
 gama 1,5;limiar e morfologia;;
 gama 1,5;perfil do ICT;;
-gama 1,5;PSPNet;;
-CLAHE;limiar e morfologia;28,70728437602521;-4,0
-CLAHE;perfil do ICT;42,263501998037114;41,333333333333336
-CLAHE;PSPNet;29,10599665902556;-2,6666666666666665
-nitidez suave;limiar e morfologia;;
+gama 1,5;PSPNet;4,784547396004202;-84,0
+CLAHE;limiar e morfologia;27,11243524402381;-9,333333333333334
+CLAHE;perfil do ICT;25,118873829022057;-16,0
+CLAHE;PSPNet;28,30857209302486;-5,333333333333333
+nitidez suave;limiar e morfologia;9,967807075008754;-66,66666666666667
 nitidez suave;perfil do ICT;;
-nitidez suave;PSPNet;28,30857209302486;-5,333333333333333
-nitidez forte;limiar e morfologia;;
-nitidez forte;perfil do ICT;25,716942253522586;-14,0
-nitidez forte;PSPNet;12,758793056011204;-57,333333333333336
+nitidez suave;PSPNet;29,10599665902556;-2,6666666666666665
+nitidez forte;limiar e morfologia;28,70728437602521;-4,0
+nitidez forte;perfil do ICT;25,118873829022057;-16,0
+nitidez forte;PSPNet;29,10599665902556;-2,6666666666666665

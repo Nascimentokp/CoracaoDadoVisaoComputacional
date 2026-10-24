@@ -41,12 +41,15 @@ INTERPOLACOES = {
 def ordenar_cantos(pontos: np.ndarray) -> np.ndarray:
     """Ordena 4 pontos como sup. esquerdo, sup. direito, inf. direito, inf. esquerdo.
 
-    O sup. esquerdo tem a menor soma x + y e o inf. direito a maior; o sup.
-    direito tem a menor diferença y − x e o inf. esquerdo a maior.
+    Os pontos são postos em volta do centro, no sentido horário (o eixo y da
+    imagem cresce para baixo), e a volta começa no de menor soma x + y. Com a
+    folha girada a 45°, dois pontos empatam na soma, mas a ordem horária não
+    repete nenhum: cada canto sai uma vez só.
     """
     p = np.asarray(pontos, dtype=np.float32).reshape(4, 2)
-    soma, dif = p.sum(axis=1), p[:, 1] - p[:, 0]
-    return np.array([p[soma.argmin()], p[dif.argmin()], p[soma.argmax()], p[dif.argmax()]])
+    centro = p.mean(axis=0)
+    horario = p[np.argsort(np.arctan2(p[:, 1] - centro[1], p[:, 0] - centro[0]))]
+    return np.roll(horario, -int(horario.sum(axis=1).argmin()), axis=0)
 
 
 def cantos_do_retangulo(largura: int, altura: int) -> np.ndarray:

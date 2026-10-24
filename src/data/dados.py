@@ -13,6 +13,7 @@ catálogo e a mesma divisão, para que a comparação entre eles seja justa.
 from __future__ import annotations
 
 import hashlib
+import shutil
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -26,28 +27,52 @@ from sklearn.model_selection import StratifiedGroupKFold, train_test_split
 from src import config
 
 
-def _md5(caminho: Path) -> str:
-    h = hashlib.md5()
+def _hash(caminho: Path, algoritmo: str = "md5") -> str:
+    h = hashlib.new(algoritmo)
     with caminho.open("rb") as arquivo:
         for bloco in iter(lambda: arquivo.read(1 << 20), b""):
             h.update(bloco)
     return h.hexdigest()
 
 
+def _baixar(url: str, destino: Path) -> Path:
+    """Baixa para `<destino>.part` e só renomeia no fim: um download interrompido
+    não deixa no lugar um arquivo pela metade que pareça completo."""
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    parcial = destino.with_name(destino.name + ".part")
+    urllib.request.urlretrieve(url, parcial)
+    parcial.replace(destino)
+    return destino
+
+
+def _conferir(caminho: Path, esperado: str, algoritmo: str) -> None:
+    """Apaga o arquivo e avisa se o hash não bate, para a próxima chamada baixar de novo."""
+    if _hash(caminho, algoritmo) != esperado:
+        caminho.unlink()
+        raise ValueError(
+            f"{algoritmo.upper()} de {caminho.name} não confere: arquivo apagado, rode de novo."
+        )
+
+
 def baixar_base(forcar: bool = False) -> Path:
     """Baixa o zip do Zenodo, confere o MD5 e extrai em `data/raw/`.
 
     Não faz nada se a pasta já estiver extraída (a menos que `forcar=True`).
+    A extração vai para uma pasta temporária e só é renomeada no fim: uma
+    extração interrompida não deixa uma base pela metade que pareça completa.
     """
     if config.PASTA_BASE.exists() and not forcar:
         return config.PASTA_BASE
-    config.DATA_RAW.mkdir(parents=True, exist_ok=True)
     if forcar or not config.ZIP_BASE.exists():
-        urllib.request.urlretrieve(config.URL_BASE, config.ZIP_BASE)
-    if _md5(config.ZIP_BASE) != config.MD5_BASE:
-        raise ValueError(f"MD5 de {config.ZIP_BASE.name} não confere: arquivo corrompido.")
+        _baixar(config.URL_BASE, config.ZIP_BASE)
+    _conferir(config.ZIP_BASE, config.MD5_BASE, "md5")
+    temporaria = config.DATA_RAW / "_extraindo"
+    shutil.rmtree(temporaria, ignore_errors=True)
     with zipfile.ZipFile(config.ZIP_BASE) as zf:
-        zf.extractall(config.DATA_RAW)
+        zf.extractall(temporaria)
+    shutil.rmtree(config.PASTA_BASE, ignore_errors=True)
+    (temporaria / config.PASTA_BASE.name).replace(config.PASTA_BASE)
+    shutil.rmtree(temporaria, ignore_errors=True)
     return config.PASTA_BASE
 
 
@@ -57,21 +82,15 @@ def baixar_ecg(arquivos: tuple[str, ...] = (config.ECG_ESCANEADO, config.ECG_FOT
     for nome in arquivos:
         destino = config.PASTA_ECG / nome
         if not destino.exists():
-            urllib.request.urlretrieve(f"{config.URL_ECG}/{nome}", destino)
+            _baixar(f"{config.URL_ECG}/{nome}", destino)
     return config.PASTA_ECG
 
 
 def baixar_ct() -> Path:
-    """Baixa a tomografia de tórax do 3D Slicer (se faltar) e confere o SHA-256."""
+    """Baixa a tomografia de tórax do 3D Slicer (se faltar) e confere o SHA-256 ao baixar."""
     if not config.ARQUIVO_CT.exists():
-        config.DATA_RAW.mkdir(parents=True, exist_ok=True)
-        urllib.request.urlretrieve(config.URL_CT, config.ARQUIVO_CT)
-    h = hashlib.sha256()
-    with config.ARQUIVO_CT.open("rb") as arquivo:
-        for bloco in iter(lambda: arquivo.read(1 << 20), b""):
-            h.update(bloco)
-    if h.hexdigest() != config.SHA256_CT:
-        raise ValueError(f"SHA-256 de {config.ARQUIVO_CT.name} não confere: arquivo corrompido.")
+        _baixar(config.URL_CT, config.ARQUIVO_CT)
+        _conferir(config.ARQUIVO_CT, config.SHA256_CT, "sha256")
     return config.ARQUIVO_CT
 
 

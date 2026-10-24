@@ -36,6 +36,15 @@ def test_ordenar_cantos_em_qualquer_ordem():
     np.testing.assert_array_equal(geometria.ordenar_cantos(embaralhados), certos)
 
 
+def test_ordenar_cantos_com_folha_a_45_graus_nao_repete_canto():
+    losango = np.array([[50, 0], [100, 50], [50, 100], [0, 50]], np.float32)
+    ordenados = geometria.ordenar_cantos(losango[[3, 1, 0, 2]])
+    assert len({tuple(p) for p in ordenados}) == 4
+    # sentido horário na imagem: a área com sinal (y para baixo) é positiva
+    x, y = ordenados[:, 0], ordenados[:, 1]
+    assert (x * np.roll(y, -1) - np.roll(x, -1) * y).sum() > 0
+
+
 def test_passo_da_grade_recupera_px_por_mm():
     horizontal, vertical = geometria.passo_da_grade(papel_ecg())
     assert horizontal == pytest.approx(PX_MM, abs=0.05)

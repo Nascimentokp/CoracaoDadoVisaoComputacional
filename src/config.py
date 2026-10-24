@@ -72,6 +72,11 @@ DPI = 150
 #: Fração do treino original separada, estratificada, para validação.
 PROPORCAO_VALIDACAO = 0.20
 
+#: Parâmetros do perfil por linha do ICT escolhidos pela grade de validação do
+#: notebook 04 (AUC de validação, depois menos falhas). Todos os notebooks que
+#: medem o ICT depois do 04 usam estes; se a grade mudar de escolha, mude aqui.
+PARAMS_ICT = dict(sigma_vertical=3.0, linhas=(50, 90), quantil=75.0)
+
 #: Correlação (imagens reduzidas a 32×32) a partir da qual dois raios-X são
 #: tratados como prováveis exames do mesmo paciente. Calibrada olhando os pares
 #: no notebook 01: entre 0,93 e 0,96 quase todos são a mesma pessoa; perto de

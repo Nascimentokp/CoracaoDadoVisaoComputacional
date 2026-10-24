@@ -99,6 +99,41 @@ def treinar(
     )
 
 
+def treinar_ou_carregar(
+    arquivo,
+    X: np.ndarray,
+    rotulo: np.ndarray,
+    treino: np.ndarray,
+    validacao: np.ndarray,
+    retreinar: bool = False,
+    verbose: int = 0,
+) -> tuple[keras.Model, dict]:
+    """U-Net de um professor: carrega `arquivo` se existir, senão treina e grava.
+
+    Só entram no treino os exames em que o professor marcou algum coração.
+    O histórico fica ao lado, em `<arquivo>.historico.json`. É a receita única
+    do notebook 10 e de `scripts/treinar_unets.py`.
+    """
+    from pathlib import Path
+
+    from src.utils.io import ler_json, salvar_json
+
+    arquivo = Path(arquivo)
+    historico = arquivo.with_suffix(".historico.json")
+    if retreinar or not arquivo.exists():
+        tem_coracao = rotulo.any(axis=(1, 2))
+        keras.utils.set_random_seed(config.SEMENTE)
+        modelo = construir_unet()
+        tr, va = treino & tem_coracao, validacao & tem_coracao
+        h = treinar(modelo, X[tr], rotulo[tr], X[va], rotulo[va], verbose=verbose)
+        modelo.save(arquivo)
+        salvar_json(h.history, historico)
+    modelo = keras.models.load_model(
+        arquivo, custom_objects={"perda_bce_dice": perda_bce_dice, "dice_suave": dice_suave}
+    )
+    return modelo, ler_json(historico)
+
+
 def prever(modelo: keras.Model, X: np.ndarray, lote: int = 64) -> np.ndarray:
     """Probabilidade de coração por pixel, (n, 128, 128)."""
     return modelo.predict(X, batch_size=lote, verbose=0)[..., 0]

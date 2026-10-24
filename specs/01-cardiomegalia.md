@@ -10,7 +10,8 @@ diagnóstico e não substitui a leitura do radiologista.
 ### Dados
 - **DADOS-01**: o catálogo tem 5.552 imagens (4.438 treino, 1.114 teste), classes
   equilibradas em treino, validação e teste; a validação sai só do treino, com semente
-  fixa; o teste da base fica intocado. (`tests/test_dados.py`)
+  fixa; o teste da base fica intocado; um download conferido que não bate é apagado, e nenhum
+  download deixa arquivo pela metade no lugar do final. (`tests/test_dados.py`)
 
 ### Auditoria do lote
 - **AUD-01**: brilho, contraste e nitidez são calculados por imagem; duplicatas exatas
@@ -29,7 +30,8 @@ diagnóstico e não substitui a leitura do radiologista.
 - **GEO-01**: em papel milimetrado sintético de régua conhecida, o passo da grade é recuperado
   (±0,05 px/mm); a frequência cardíaca da tira de ritmo sai a ±3 % para 60, 75 e 110 bpm; a
   máscara do traçado ignora grade vermelha e sombra; numa foto simulada em perspectiva os 4 cantos
-  são achados a menos de 6 px e, depois da homografia, a régua volta ao valor original.
+  são achados a menos de 6 px e, depois da homografia, a régua volta ao valor original; os cantos
+  saem em ordem horária sem repetir nenhum, inclusive com a folha girada a 45°.
   (`tests/test_geometria.py`)
 
 ### Métricas
@@ -51,7 +53,8 @@ diagnóstico e não substitui a leitura do radiologista.
   caso perfeito; exames sem escore ficam de fora. (`tests/test_modelos.py`)
 - **MOD-03**: o sorteio de poucos exames é balanceado, reprodutível pela semente, só usa os candidatos
   e recusa pedir mais exames do que há; a cabeça (regressão logística com C por validação cruzada)
-  aprende com 10 exemplos por classe (AUC > 0,85); base desconhecida é recusada.
+  aprende com 10 exemplos por classe (AUC > 0,85); com grupos, nenhuma dobra da validação cruzada
+  separa um raio-X do seu espelho; base desconhecida é recusada.
   (`tests/test_transferencia.py`)
 
 ### Divisões e auditoria de atalho
@@ -80,5 +83,8 @@ diagnóstico e não substitui a leitura do radiologista.
 ### Tomografia (apêndice)
 - **TC-01**: a janela leva a faixa escolhida a [0, 1]; num fantoma de tórax o pulmão por densidade acha
   os dois pulmões e deixa de fora o ar de fora do corpo; o gás do abdome passa corte a corte mas sai na
-  conta em 3D; a atenuação vale 0 no ar e 1 na água; a projeção soma em milímetros e sai na convenção
-  radiológica; levar a 128 × 128 preserva a proporção das larguras. (`tests/test_tomografia.py`)
+  conta em 3D (uma bolha maior que 10 % do pulmão, que só a regra de subir ao alto do tórax tira); a
+  atenuação vale 0 no ar e 1 na água; a projeção soma em milímetros e sai na convenção radiológica;
+  levar a 128 × 128 dá pixel quadrado, sem esticar a altura, com ar em volta; a nitidez deixa o corpo
+  todo acima de zero (o pulmão não vira o preto do ar de fora); um CT com eixo invertido é recusado.
+  (`tests/test_tomografia.py`)
