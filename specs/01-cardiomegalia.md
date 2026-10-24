@@ -59,6 +59,8 @@ diagnóstico e não substitui a leitura do radiologista.
 
 ### Divisões e auditoria de atalho
 - **DADOS-02**: a divisão por grupo nunca parte um grupo e mantém 60/20/20 com classes equilibradas;
+  o corte sem paciente do teste tira do treino e da validação só quem divide grupo com o teste e
+  deixa o teste oficial intocado;
   a divisão aleatória mantém 60/20/20; tapar e isolar uma caixa são complementares e pintam com a
   média da própria imagem; as caixas de referência cobrem coração e tórax de um tórax sintético.
   (`tests/test_dados.py`, `tests/test_auditoria.py`, `tests/test_ict.py`)

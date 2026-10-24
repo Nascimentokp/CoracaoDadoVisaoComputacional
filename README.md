@@ -60,7 +60,10 @@ são baixados na primeira execução.
 
 **O que a rede usa** (notebooks 06 e 07): com a região do coração tapada a AUC cai só de 0,695 para
 0,657; o Grad-CAM mostra a borda esquerda do coração nas cardiomegalias, mas também atenção fora do
-tórax. O vazamento por paciente não inflou a AUC (split aleatório 0,680 × por grupo 0,694).
+tórax. O vazamento por paciente não sustenta o 0,80: treinada de novo com a receita completa (150
+épocas) num corte sem nenhum paciente do teste no treino, a CNN dá 0,807 ± 0,008 em 3 sementes, contra
+0,806 ± 0,014 no corte oficial, no mesmo teste (diferenças pareadas de −0,011 a +0,011). A DenseNet do
+CheXpert dá 0,826 nos dois cortes.
 
 **Segmentação** (notebook 08): contra 29 contornos marcados à mão, as bordas do ICT dão Dice 0,64
 (IC 0,59–0,69), o limiar e morfologia 0,58 e a caixa fixa 0,51. Os contornos foram feitos na
@@ -117,6 +120,7 @@ uv sync                    # ambiente (Python 3.12)
 uv run invoke dados        # baixa e confere a base
 uv run invoke testes       # critérios de aceitação (specs/01-cardiomegalia.md)
 uv run python scripts/treinar_unets.py  # U-Nets do notebook 10 (≈ 1 h cada na CPU)
+uv run python scripts/treinar_corte_limpo.py  # CNN do 05 sem paciente do teste, notebook 06 (≈ 2 h)
 uv run invoke notebooks    # executa os notebooks e regrava reports/
 uv run invoke lab          # JupyterLab
 ```

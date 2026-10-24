@@ -173,6 +173,21 @@ def dividir_por_grupo(
     return pd.Series(nomes[dobra], index=catalogo.index, name="conjunto")
 
 
+def sem_paciente_do_teste(conjunto: pd.Series, grupos: np.ndarray) -> pd.Series:
+    """O corte oficial com o teste intocado e sem nenhum paciente dos dois lados.
+
+    Todo exame de treino ou validação cujo grupo (notebook 01) também tem
+    alguém no teste vira "fora": nem treina, nem escolhe época. O teste
+    continua sendo o oficial, então a AUC se compara com a do corte original
+    nos mesmos exames.
+    """
+    conjunto = conjunto.copy()
+    grupos = np.asarray(grupos)
+    cruza = np.isin(grupos, grupos[(conjunto == "teste").to_numpy()]) & (conjunto != "teste")
+    conjunto[cruza] = "fora"
+    return conjunto
+
+
 def dividir_aleatorio(catalogo: pd.DataFrame, semente: int = config.SEMENTE) -> pd.Series:
     """Divisão 60/20/20 da base inteira estratificada pela classe, ignorando grupos.
 

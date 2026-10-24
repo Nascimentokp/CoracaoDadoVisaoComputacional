@@ -71,6 +71,16 @@ def test_dividir_por_grupo_nunca_parte_um_grupo(catalogo):
         assert catalogo["classe"][conjunto == nome].mean() == pytest.approx(0.5, abs=0.03)
 
 
+def test_sem_paciente_do_teste_tira_so_quem_cruza():
+    from src.data.dados import sem_paciente_do_teste
+
+    conjunto = pd.Series(["treino", "treino", "validacao", "teste", "teste", "treino"])
+    grupos = np.array([1, 2, 3, 1, 4, 3])  # o grupo 1 cruza; o 3 fica todo fora do teste
+    limpo = sem_paciente_do_teste(conjunto, grupos)
+    assert limpo.tolist() == ["fora", "treino", "validacao", "teste", "teste", "treino"]
+    assert conjunto.tolist()[0] == "treino"  # não altera a original
+
+
 def test_dividir_aleatorio_60_20_20(catalogo):
     conjunto = dividir_aleatorio(catalogo)
     proporcoes = conjunto.value_counts(normalize=True)
